@@ -9,7 +9,7 @@
 
 INET_IP="108.177.97.192"
 INET_IPPORT="7276"
-LAN_IP="118.193.145.14"
+LAN_IP="11.193.15.14"
 IPTABLES="/sbin/iptables"
 #echo "1" > /proc/sys/net/ipv4/ip_forward 
 #$IPTABLES -t nat -A PREROUTING -d $LAN_IP -p tcp -m tcp --dport $INET_IPPORT -j DNAT --to-destination $INET_IP
@@ -20,9 +20,16 @@ OLD_IP=`tail -n 1 $LOG_PATH`
 echo $OLD_IP
 #IP_TEMP=`ping -w 3  baidu.com | grep 'icmp_seq=1' | awk '{print $4}'`
 #IP_TEMP=`ping -w 3  supl.google.com | grep 'icmp_seq=1' | awk '{print $4}'`
-IP_TEMP=`ping -w 3  baidu.com | grep 'icmp_seq=1'`
-IP_TEMP=`echo ${IP_TEMP#*(}`
-IP_TEMP=`echo ${IP_TEMP%)*}`
+
+# IP_TEMP=`ping -w 3  baidu.com | grep 'icmp_seq=1'`
+# IP_TEMP=`echo ${IP_TEMP#*(}`
+# IP_TEMP=`echo ${IP_TEMP%)*}`
+
+IP_TEMP=`ping -w 3  baidu.com | grep 'icmp_seq=1' | cut -d ')' -f 1`
+IP_TEMP=`echo ${IP_TEMP##*(}`
+
+ehco "dns ip is $IP_TEMP "
+
 if [[ "$OLD_IP"x == "$IP_TEMP"x ]];then
 	echo "$(date) old ip: " >> $LOG_PATH 
 else 
