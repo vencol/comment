@@ -19,11 +19,14 @@ LOG_PATH=$(pwd)/iplog
 OLD_IP=`tail -n 1 $LOG_PATH`
 echo $OLD_IP
 #IP_TEMP=`ping -w 3  baidu.com | grep 'icmp_seq=1' | awk '{print $4}'`
-IP_TEMP=`ping -w 3  supl.google.com | grep 'icmp_seq=1' | awk '{print $4}'`
+#IP_TEMP=`ping -w 3  supl.google.com | grep 'icmp_seq=1' | awk '{print $4}'`
+IP_TEMP=`ping -w 3  baidu.com | grep 'icmp_seq=1'`
+IP_TEMP=`echo ${IP_TEMP#*(}`
+IP_TEMP=`echo ${IP_TEMP%)*}`
 if [[ "$OLD_IP"x == "$IP_TEMP"x ]];then
-	echo "old ip: " >> $LOG_PATH 
+	echo "$(date) old ip: " >> $LOG_PATH 
 else 
-	echo "$OLD_IP change to new ip: " >> $LOG_PATH
+	echo "$(date) $OLD_IP change to new ip: " >> $LOG_PATH
 	echo "1" > /proc/sys/net/ipv4/ip_forward 
 	$IPTABLES -t nat -A PREROUTING -d $LAN_IP -p tcp -m tcp --dport $INET_IPPORT -j DNAT --to-destination $IP_TEMP
 	$IPTABLES -t nat -A POSTROUTING -d $IP_TEMP -p tcp --dport $INET_IPPORT -j MASQUERADE
