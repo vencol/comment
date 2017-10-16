@@ -9,7 +9,7 @@
 
 INET_IP="108.177.97.192"
 INET_IPPORT="7276"
-LAN_IP="118.193.145.14"
+LAN_IP="11.193.15.14"
 IPTABLES="/sbin/iptables"
 #echo "1" > /proc/sys/net/ipv4/ip_forward 
 #$IPTABLES -t nat -A PREROUTING -d $LAN_IP -p tcp -m tcp --dport $INET_IPPORT -j DNAT --to-destination $INET_IP
